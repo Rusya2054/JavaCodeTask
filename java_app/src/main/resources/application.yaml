@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: JavaCodeTask
+    numbers:
+      output:
+        scale: ${NUMBER_OUTPUT_SCALE:3}
+  datasource:
+    primary:
+      url: jdbc:postgresql://${DB_HOST:postgres_container}:${DB_PORT:5432}/${DB_NAME:postgres}
+      username: ${DB_USERNAME:postgres}
+      password: ${DB_PASSWORD:123}
+      driverClassName: org.postgresql.Driver
+      hikari:
+        auto-commit: false
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format-sql: true
+  web:
+    resources:
+      static-locations: classpath:/templates/
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: false
+      read-unknown-enum-values-as-null: true
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+    enabled: true
+server:
+  port: ${SERVICE_PORT:8181}
+logging:
+  level:
+    org:
+      springframework:
+        transaction:
+          interceptor: INFO
+        boot:
+          context:
+            properties: INFO
+      hibernate:
+        SQL: INFO
+        type:
+          descriptor:
+            sql:
+              BasicBinder: INFO
